@@ -5,7 +5,7 @@ const PostList = (props) => {
   return (
     <div>
       <h1 style={{textAlign: 'center'}}>
-        Post's list
+        {props.title}
       </h1>
       {props.posts.map(post =>
         <PostItem post={post} key={post.id}/>
