@@ -15,20 +15,15 @@ function App() {
     {id: 4, title: 'Javascript Node JS', body: 'Description'}
   ])
 
-  const [title, setTitle] = useState('');
-  const [body, setBody] = useState('');
+  const [post, setPost] = useState({title: '', body: ''});
+  //const [body, setBody] = useState('');
   // const bodyInputRef = useRef();
 
   const addNewPost = (event) => {
     event.preventDefault();
-    const newPost = {
-      id: Date.now(),
-      title, 
-      body
-    }
-    setPosts([...posts, newPost]);
-    setTitle('');
-    setBody('');
+
+    setPosts([...posts, {...post, id: Date.now()}]);
+    setPost({title: '', body: ''});
   }
 
 
@@ -37,15 +32,15 @@ function App() {
       <form>
         {/* Управляемый компонент, двухстороннее связывание */}
         <MyInput 
-          value={title}
-          onChange={e => setTitle(e.target.value)}
+          value={post.title}
+          onChange={e => setPost({...post, title: e.target.value})}
           type="text" 
           placeholder='name of post'
         />
         {/* Управляемый компонент, двухстороннее связывание */}
         <MyInput 
-          value={body}
-          onChange={e => setBody(e.target.value)}
+          value={post.body}
+          onChange={e => setPost({...post, body: e.target.value})}
           type="text" 
           placeholder='description of post'
         />
