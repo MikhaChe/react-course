@@ -1,5 +1,5 @@
 //import Counter from './components/Counter';
-import React, {useState, useRef} from 'react';
+import React, {useState} from 'react';
 
 import PostList from './components/PostList';
 import MyButton from './components/UI/button/MyButton';
@@ -16,28 +16,36 @@ function App() {
   ])
 
   const [title, setTitle] = useState('');
-  const bodyInputRef = useRef();
+  const [body, setBody] = useState('');
+  // const bodyInputRef = useRef();
 
   const addNewPost = (event) => {
     event.preventDefault();
-    console.log(title);
-    console.log(bodyInputRef.current.value);
+    const newPost = {
+      id: Date.now(),
+      title, 
+      body
+    }
+    setPosts([...posts, newPost]);
+    setTitle('');
+    setBody('');
   }
 
 
   return (
     <div className="App">
       <form>
-        {/* Управляемый компонент */}
+        {/* Управляемый компонент, двухстороннее связывание */}
         <MyInput 
           value={title}
           onChange={e => setTitle(e.target.value)}
           type="text" 
           placeholder='name of post'
         />
-        {/* Неуправляемый или неконтролируемый компонент */}
+        {/* Управляемый компонент, двухстороннее связывание */}
         <MyInput 
-          ref={bodyInputRef}
+          value={body}
+          onChange={e => setBody(e.target.value)}
           type="text" 
           placeholder='description of post'
         />
