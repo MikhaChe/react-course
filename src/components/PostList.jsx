@@ -2,6 +2,14 @@ import React from 'react';
 import PostItem from './PostItem';
 
 const PostList = (props) => {
+
+  if(!props.posts.length) {
+    return (
+      <h1 style={{textAlign: 'center', paddingTop: '35px'}}> 
+        Posts not found! 
+      </h1>
+    )
+  }
   
   return (
     <div>
