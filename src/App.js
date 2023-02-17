@@ -10,20 +10,18 @@ import MyModal from './components/UI/MyModal/MyModal';
 import MyButton from './components/UI/button/MyButton';
 import PostService from './API/PostService.js';
 import Loader from './components/UI/Loader/Loader.jsx';
+import { useFetching } from './hooks/useFetch.js';
 
 
 function App() {
-  const [posts, setPosts] = useState([
-    {id: 1, title: 'Javascript', body: 'Javascript Description'},
-    {id: 2, title: 'VUE JS', body: 'VUE JS Description'},
-    {id: 3, title: 'React JS', body: 'React JS Description'},
-    {id: 4, title: 'Node JS', body: 'Description Node JS '}
-  ])
-
+  const [posts, setPosts] = useState([]);
   const [filter, setFilter] = useState({sort:'', query: ''});
   const [modal, setModal] = useState(false);
   const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
-  const [isPostLoading, setIsPostLoading] = useState(false);
+  const [fetchPosts, isPostLoading, postError] = useFetching(async () => {
+      const posts = await PostService.getAll();
+      setPosts(posts);
+  });
 
   useEffect(() => {
     fetchPosts();
@@ -32,17 +30,6 @@ function App() {
   const createPost = (newPost) => {
     setPosts([...posts, newPost]);
     setModal(false);
-  }
-
-  async function fetchPosts() {
-    setIsPostLoading(true);
-    
-    setTimeout(async () => {
-      const posts = await PostService.getAll();
-      setPosts(posts);
-      setIsPostLoading(false);
-    }, 1000) 
-    
   }
 
   // Получение поста из дочернего компонента
@@ -65,6 +52,9 @@ function App() {
         filter={filter}
         setFilter={setFilter}
       />
+      {postError &&
+        <h1> is error!! </h1>
+      }
       {isPostLoading
         ? <div style={{display: 'flex', justifyContent: 'center', marginTop: '50px'}}><Loader/></div>
         : <PostList remove={removePost} title = "Post's list" posts={sortedAndSearchedPosts}/> 
