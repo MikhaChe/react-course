@@ -31,6 +31,7 @@ function App() {
       setTotalPages(getPagesCount(totalCount, limit));
   });
 
+  //В useEffect вторым аргументом в качестве элемента массива подставлено page для своевременного изменения этого состояния  
   useEffect(() => {
     fetchPosts();
   }, [page])
